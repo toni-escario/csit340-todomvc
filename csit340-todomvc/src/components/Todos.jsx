@@ -33,7 +33,13 @@ function Todos() {
     setTodos(todos.map((todo) => ({ ...todo, completed: !allCompleted })))
   }
   const itemsLeft = todos.filter((todo) => !todo.completed).length
+  const [filter, setFilter] = useState('all')
 
+  const filteredTodos = todos.filter((todo) => {
+    if (filter === 'active') return !todo.completed
+    if (filter === 'completed') return todo.completed
+    return true
+  })
   return (
     <section className="mx-auto max-w-[550px]">
         <h1 className="text-center text-[80px] font-extralight text-[#b83f45]">
@@ -69,7 +75,7 @@ function Todos() {
             <span className="rotate-90">❯</span>
           </label>
           <ul>
-            {todos.map((todo) => (
+            {filteredTodos.map((todo) => (
               <li
                 key={todo.id}
                 className="group relative flex items-center border-b border-[#ededed] text-2xl"
@@ -107,31 +113,46 @@ function Todos() {
             <strong className="font-light">{itemsLeft}</strong> {itemsLeft === 1 ? 'item' : 'items'} left
           </span>
           <ul className="flex justify-center gap-1">
-            <li>
-              <button
-                type="button"
-                className="cursor-pointer rounded-[3px] border border-[#b83f45]/20 px-[7px] py-[3px]"
-              >
-                All
-              </button>
-            </li>
-            <li>
-              <button
-                type="button"
-                className="cursor-pointer rounded-[3px] border border-transparent px-[7px] py-[3px] hover:border-[#b83f45]/10"
-              >
-                Active
-              </button>
-            </li>
-            <li>
-              <button
-                type="button"
-                className="cursor-pointer rounded-[3px] border border-transparent px-[7px] py-[3px] hover:border-[#b83f45]/10"
-              >
-                Completed
-              </button>
-            </li>
-          </ul>
+         <li>
+           <button
+             type="button"
+             onClick={() => setFilter('all')}
+             className={
+               filter === 'all'
+                 ? 'cursor-pointer rounded-[3px] border border-[#b83f45]/20 px-[7px] py-[3px]'
+                 : 'cursor-pointer rounded-[3px] border border-transparent px-[7px] py-[3px] hover:border-[#b83f45]/10'
+             }
+           >
+             All
+           </button>
+         </li>
+         <li>
+           <button
+             type="button"
+             onClick={() => setFilter('active')}
+             className={
+               filter === 'active'
+                 ? 'cursor-pointer rounded-[3px] border border-[#b83f45]/20 px-[7px] py-[3px]'
+                 : 'cursor-pointer rounded-[3px] border border-transparent px-[7px] py-[3px] hover:border-[#b83f45]/10'
+             }
+           >
+             Active
+           </button>
+         </li>
+         <li>
+           <button
+             type="button"
+             onClick={() => setFilter('completed')}
+             className={
+               filter === 'completed'
+                 ? 'cursor-pointer rounded-[3px] border border-[#b83f45]/20 px-[7px] py-[3px]'
+                 : 'cursor-pointer rounded-[3px] border border-transparent px-[7px] py-[3px] hover:border-[#b83f45]/10'
+             }
+           >
+             Completed
+           </button>
+         </li>
+       </ul>
           {todos.some((todo) => todo.completed) && (
             <button
               type="button"
